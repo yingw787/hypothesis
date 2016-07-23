@@ -908,7 +908,14 @@ def composite(f):
         class CompositeStrategy(SearchStrategy):
 
             def do_draw(self, data):
-                return f(data.draw, *args, **kwargs)
+                def draw(strategy):
+                    if not isinstance(strategy, SearchStrategy):
+                        raise TypeError((
+                            'draw expected SearchStrategy but was called with '
+                            'value %r of type %s') % (strategy,
+                                                      type(strategy).__name__))
+                    return data.draw(strategy)
+                return f(draw, *args, **kwargs)
         return CompositeStrategy()
     return accept
 

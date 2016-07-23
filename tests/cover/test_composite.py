@@ -95,3 +95,12 @@ def test_composite_of_lists():
         return draw(st.integers()) + draw(st.integers())
 
     assert find(st.lists(f()), lambda x: len(x) >= 10) == [0] * 10
+
+
+def test_should_type_error_when_passed_non_strategy():
+    @st.composite
+    def f(draw):
+        return draw(1)
+
+    with pytest.raises(TypeError):
+        f().example()
