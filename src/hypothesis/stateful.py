@@ -176,9 +176,13 @@ class GenericStateMachine(object):
                 min_satisfying_examples=1
             )
 
-            def runTest(self):
-                run_state_machine_as_test(state_machine_class)
+        # We define this outside of the class and assign it because you can't
+        # assign attributes to instance method values in Python 2
+        def runTest(self):
+            run_state_machine_as_test(state_machine_class)
 
+        runTest.is_hypothesis_test = True
+        StateMachineTestCase.runTest = runTest
         base_name = state_machine_class.__name__
         StateMachineTestCase.__name__ = str(
             base_name + u'.TestCase'
@@ -190,7 +194,6 @@ class GenericStateMachine(object):
         state_machine_class._test_case_cache[state_machine_class] = (
             StateMachineTestCase
         )
-        StateMachineTestCase.runTest.is_hypothesis_test = True
         return StateMachineTestCase
 
 GenericStateMachine.find_breaking_runner = classmethod(find_breaking_runner)
