@@ -190,6 +190,7 @@ class GenericStateMachine(object):
         state_machine_class._test_case_cache[state_machine_class] = (
             StateMachineTestCase
         )
+        StateMachineTestCase.runTest.is_hypothesis_test = True
         return StateMachineTestCase
 
 GenericStateMachine.find_breaking_runner = classmethod(find_breaking_runner)
