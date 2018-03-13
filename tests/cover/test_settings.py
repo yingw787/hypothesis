@@ -162,11 +162,16 @@ def test_load_profile():
     assert settings.default.min_satisfying_examples == 5
 
 
-@checks_deprecated_behaviour
-def test_nonstring_profile_names_deprecated():
-    settings.register_profile(5, max_shrinks=5)
-    settings.load_profile(5)
-    assert settings.default.max_shrinks == 5
+def test_register_nonstring_profile_names_error():
+    with pytest.raises(InvalidArgument) as err:
+        settings.register_profile(7, max_shrinks=7)
+    assert str(err.value) == 'name=7 must be a string'
+
+
+def test_load_nonstring_profile_names_error():
+    with pytest.raises(InvalidArgument) as err:
+        settings.load_profile(5)
+    assert str(err.value) == 'name=5 must be a string'
 
 
 def test_loading_profile_keeps_expected_behaviour():

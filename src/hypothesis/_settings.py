@@ -299,7 +299,7 @@ class settings(settingsMeta('settings', (object,), {})):
         parent (or settings.default, if parent is None).
         """
         if not isinstance(name, (str, text_type)):
-            note_deprecation('name=%r must be a string' % (name,))
+            raise InvalidArgument('name=%r must be a string' % (name,))
         if 'settings' in kwargs:
             if parent is None:
                 parent = kwargs.pop('settings')
@@ -331,7 +331,7 @@ class settings(settingsMeta('settings', (object,), {})):
         defined default for that setting.
         """
         if not isinstance(name, (str, text_type)):
-            note_deprecation('name=%r must be a string' % (name,))
+            raise InvalidArgument('name=%r must be a string' % (name,))
         settings._current_profile = name
         settings._assign_default_internal(settings.get_profile(name))
 
